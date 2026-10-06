@@ -31,6 +31,7 @@ public class GuardService extends Service {
     private final Runnable fallbackCheck = new Runnable() {
         @Override public void run() {
             repair(false);
+            FcmReconnect.kick(GuardService.this);
             handler.postDelayed(this, FALLBACK_INTERVAL_MS);
         }
     };

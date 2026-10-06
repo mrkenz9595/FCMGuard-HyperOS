@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">FCM Guard</string>
-    <string name="subtitle">Quiet FCM protection for HyperOS</string>
+    <string name="subtitle">Quiet FCM protection for OriginOS &amp; HyperOS</string>
     <string name="label_key">Settings key</string>
     <string name="label_item">Required item</string>
     <string name="save_configuration">Save configuration</string>
@@ -9,6 +9,17 @@
     <string name="repair_now">Repair now</string>
     <string name="wake_fcm">Wake FCM now</string>
     <string name="open_fcm_diag">Open FCM diagnostics</string>
+    <string name="open_bg_power">Background power</string>
+    <string name="battery_unrestricted">Unrestrict battery</string>
+    <string name="preset_origin_os">OriginOS preset</string>
+    <string name="preset_hyperos">HyperOS preset</string>
+    <string name="preset_applied">Applied preset: %1$s</string>
+    <string name="detected_os_banner">Detected system: %1$s</string>
+    <string name="battery_opt_granted">Battery optimization: Unrestricted</string>
+    <string name="battery_opt_needed">Battery optimization: Restricted (tap to unrestrict)</string>
+    <string name="open_bg_power_unavailable">Background power settings could not be opened</string>
+    <string name="note_text_originos">Recommended on OriginOS: Enable Autostart in iManager / Settings, set Battery → Background power consumption management to \"Allow high background power consumption\", and lock FCM Guard in the Recent Apps screen.</string>
+    <string name="note_text_hyperos">Recommended on HyperOS: Keep Autostart enabled and battery mode set to No restrictions. Developer options, USB debugging and Wireless debugging are not required.</string>
     <string name="status_title">Status</string>
     <string name="current_value_title">Current whitelist value</string>
     <string name="language">Language</string>

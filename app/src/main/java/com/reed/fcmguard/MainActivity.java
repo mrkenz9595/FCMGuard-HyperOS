@@ -60,6 +60,12 @@ public class MainActivity extends Activity {
     private Switch notificationSwitch;
     private Button permissionBtn;
     private RadioGroup appearanceGroup;
+    private Button bgPowerBtn;
+    private Button batteryOptBtn;
+    private Button presetVivoBtn;
+    private Button presetXiaomiBtn;
+    private TextView osDetectedText;
+    private TextView noteText;
     private boolean suppressSwitchCallbacks = false;
     private boolean suppressAppearanceCallbacks = false;
     private boolean notificationAccessPending = false;
@@ -154,6 +160,12 @@ public class MainActivity extends Activity {
         notificationSwitch = findViewById(R.id.notificationSwitch);
         permissionBtn = findViewById(R.id.permissionBtn);
         appearanceGroup = findViewById(R.id.appearanceGroup);
+        bgPowerBtn = findViewById(R.id.bgPowerBtn);
+        batteryOptBtn = findViewById(R.id.batteryOptBtn);
+        presetVivoBtn = findViewById(R.id.presetVivoBtn);
+        presetXiaomiBtn = findViewById(R.id.presetXiaomiBtn);
+        osDetectedText = findViewById(R.id.osDetectedText);
+        noteText = findViewById(R.id.noteText);
     }
 
     private void loadConfigIntoFields() {
@@ -345,8 +357,40 @@ public class MainActivity extends Activity {
 
         findViewById(R.id.diagBtn).setOnClickListener(v -> openFcmDiagnostics());
         scanFcmAppsBtn.setOnClickListener(v -> toggleFcmAppsList());
+
+        if (bgPowerBtn != null) {
+            bgPowerBtn.setOnClickListener(v -> {
+                if (!VendorSettings.openBackgroundPowerManager(this, null)) {
+                    toast(getString(R.string.open_bg_power_unavailable));
+                }
+            });
+        }
+
+        if (batteryOptBtn != null) {
+            batteryOptBtn.setOnClickListener(v -> {
+                VendorSettings.requestIgnoreBatteryOptimization(this);
+                refreshStatus(null);
+            });
+        }
+
+        if (presetVivoBtn != null) {
+            presetVivoBtn.setOnClickListener(v -> {
+                keyEdit.setText(R.string.default_key);
+                itemEdit.setText("com.google.android.gms");
+                toast(getString(R.string.preset_applied, "OriginOS"));
+            });
+        }
+
+        if (presetXiaomiBtn != null) {
+            presetXiaomiBtn.setOnClickListener(v -> {
+                keyEdit.setText(R.string.default_key);
+                itemEdit.setText(R.string.default_required_item);
+                toast(getString(R.string.preset_applied, "HyperOS"));
+            });
+        }
+
         findViewById(R.id.openAutostartBtn).setOnClickListener(v -> {
-            if (!HyperOsSettings.openAutoStartManager(this)) {
+            if (!VendorSettings.openAutoStartManager(this)) {
                 toast(getString(R.string.autostart_manager_unavailable));
             }
         });
@@ -479,11 +523,35 @@ public class MainActivity extends Activity {
                 LinearLayout.LayoutParams.WRAP_CONTENT));
 
         fcmAppsContainer.addView(row);
+        row.setClickable(true);
+        row.setFocusable(true);
+        row.setOnClickListener(v -> showAppOptionsDialog(app));
 
         View divider = new View(this);
         divider.setBackgroundColor(getResources().getColor(R.color.divider));
         fcmAppsContainer.addView(divider, new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, dp(1)));
+    }
+
+    private void showAppOptionsDialog(FcmAppScanner.AppEntry app) {
+        CharSequence[] items = new CharSequence[] {
+                getString(R.string.open_bg_power),
+                getString(R.string.open_autostart_manager),
+                "App settings & permissions"
+        };
+        new AlertDialog.Builder(this)
+                .setTitle(app.label)
+                .setItems(items, (dialog, which) -> {
+                    if (which == 0) {
+                        VendorSettings.openBackgroundPowerManager(this, app.packageName);
+                    } else if (which == 1) {
+                        VendorSettings.openAutoStartManager(this);
+                    } else {
+                        VendorSettings.openAppPermissionEditor(this, app.packageName);
+                    }
+                })
+                .setNegativeButton(android.R.string.cancel, null)
+                .show();
     }
 
     private int autostartStatusText(AutostartStatusReader.Status status) {
@@ -670,6 +738,29 @@ public class MainActivity extends Activity {
         statusText.setText(status);
         currentValueText.setText(buildWhitelistValue(current));
         permissionBtn.setVisibility(canWrite ? View.GONE : View.VISIBLE);
+
+        if (batteryOptBtn != null) {
+            boolean ignoring = VendorSettings.isIgnoringBatteryOptimizations(this);
+            if (ignoring) {
+                batteryOptBtn.setText(R.string.battery_opt_granted);
+                batteryOptBtn.setTextColor(getResources().getColor(R.color.green));
+            } else {
+                batteryOptBtn.setText(R.string.battery_unrestricted);
+                batteryOptBtn.setTextColor(getResources().getColor(R.color.text_primary));
+            }
+        }
+
+        if (osDetectedText != null) {
+            osDetectedText.setText(getString(R.string.detected_os_banner, DeviceHelper.getRomName()));
+        }
+
+        if (noteText != null) {
+            if (DeviceHelper.isVivo()) {
+                noteText.setText(R.string.note_text_originos);
+            } else {
+                noteText.setText(R.string.note_text_hyperos);
+            }
+        }
     }
 
     private void appendStatusValueLine(SpannableStringBuilder out, String text, int backgroundColorRes) {

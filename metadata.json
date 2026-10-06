@@ -1,0 +1,6 @@
+{
+  "name": "FCM Guard",
+  "description": "FCM notification keep-alive and background guard utility for Vivo OriginOS, Xiaomi HyperOS, and Android devices.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

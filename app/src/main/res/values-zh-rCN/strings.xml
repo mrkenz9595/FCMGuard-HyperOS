@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">FCM Guard</string>
-    <string name="subtitle">HyperOS 低功耗 FCM 保护</string>
+    <string name="subtitle">OriginOS 与 HyperOS 低功耗 FCM 保护</string>
     <string name="label_key">设置项 Key</string>
     <string name="label_item">必需项</string>
     <string name="save_configuration">保存配置</string>
@@ -9,6 +9,17 @@
     <string name="repair_now">立即修复</string>
     <string name="wake_fcm">立即唤醒 FCM</string>
     <string name="open_fcm_diag">打开 FCM 诊断</string>
+    <string name="open_bg_power">后台高耗电管理</string>
+    <string name="battery_unrestricted">忽略电池优化</string>
+    <string name="preset_origin_os">OriginOS 预设</string>
+    <string name="preset_hyperos">HyperOS 预设</string>
+    <string name="preset_applied">已应用预设：%1$s</string>
+    <string name="detected_os_banner">当前检测系统：%1$s</string>
+    <string name="battery_opt_granted">电池优化：无限制 (已忽略)</string>
+    <string name="battery_opt_needed">电池优化：受限 (点击设为无限制)</string>
+    <string name="open_bg_power_unavailable">无法直接打开后台耗电管理设置</string>
+    <string name="note_text_originos">OriginOS 推荐设置：在 i管家 / 设置中开启“自启动”，进入电池 → 后台耗电管理将 FCM Guard 和 GMS 设为“允许高后台耗电”，并在最近任务卡片中加锁 FCM Guard。</string>
+    <string name="note_text_hyperos">HyperOS 推荐设置：保持“自启动”开启，并将电池模式设为“无限制”。不需要开发者选项、USB 调试或无线调试。</string>
     <string name="status_title">状态</string>
     <string name="current_value_title">当前白名单值</string>
     <string name="language">语言</string>
